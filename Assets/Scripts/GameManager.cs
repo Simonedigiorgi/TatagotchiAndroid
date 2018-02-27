@@ -5,24 +5,46 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    private TextBox TB;
+    private PlayerController PC;
 
     public GameObject hungerText;
     public GameObject happinessText;
+    public GameObject healthText;
+    public GameObject actionsCountText;
 
-    public GameObject foodPanel;
-    public Sprite foodIcons;
+    public GameObject foodBar;
+    public GameObject healthBar;
+
+    //public Sprite foodIcons;
 
     public GameObject player;
 
+    public static bool active = true;
+
     void Start()
     {
-
+        TB = FindObjectOfType<TextBox>();
+        PC = FindObjectOfType<PlayerController>();
     }
 
     void Update()
     {
+        // MOSTRA I VALORI NUMERICI DELLE NECESSITA'
+
         hungerText.GetComponent<Text>().text = player.GetComponent<PlayerController>()._hunger.ToString();
         happinessText.GetComponent<Text>().text = player.GetComponent<PlayerController>()._happiness.ToString();
+        healthText.GetComponent<Text>().text = player.GetComponent<PlayerController>()._hygiene.ToString();
+        actionsCountText.GetComponent<Text>().text = player.GetComponent<PlayerController>()._actionsCount.ToString();
+
+
+        // MOSTRA IL BOX CON I TESTI   
+
+        if ((PC._hunger < 50 && PC._hunger > 10) && active == true)
+        {
+            TB.ShowBar("Sei molto affamata");
+            active = false;
+        }
     }
 
     void FixedUpdate() { Screen.SetResolution(480, 800, true); }
@@ -39,23 +61,29 @@ public class GameManager : MonoBehaviour
 
                 break;
             case (2):
-                foodPanel.SetActive(!foodPanel.activeInHierarchy);
+                foodBar.SetActive(!foodBar.activeInHierarchy);
                 break;
             case (3):
 
                 break;
             case (4):
-                player.GetComponent<PlayerController>().SavePlayer();
-                Application.Quit();
+                healthBar.SetActive(!healthBar.activeInHierarchy);
+                /*player.GetComponent<PlayerController>().SavePlayer();
+                Application.Quit();*/
                 break;
         }
     }
 
-    public void SelectFood(int i)
+    /*public void HealthPanel()
+    {
+        Toggle(healthPanel);
+    }*/
+
+    /*public void SelectFood(int i)
     {
         //player.GetComponent<Player>().UpdateHunger();
         //Toggle(foodPanel);                                                                          // Chiudi il pannello cibo
-    }
+    }*/
 
     public void Toggle(GameObject g)
     {

@@ -10,12 +10,24 @@ public class PlayerController : MonoBehaviour
 
     private TextBox textBox;
 
+    public Text[] numbers;
+
     [SerializeField] private int hunger;
     [SerializeField] private int happiness;
+    [SerializeField] private int hygiene;
+
+    // Popup
+
+    [SerializeField] private int poo;
+    public Button pooButton;
 
     [SerializeField] private int clickCount;
+    [SerializeField] private int actionsCount;                                          // Quante azioni puoi fare
 
     private int foodValue;
+    private int hygieneValue;
+
+    private int pooValue;
 
     private bool serverTime;
 
@@ -62,19 +74,17 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        /*if (hunger < 50 && hunger > 10)
+        if (actionsCount < 0)
         {
-            textBox.ShowBar();                                                                          // Mostra la TextBox
+            actionsCount = 0;
         }
-        else
-        {
-            textBox.HideBar();
-        }*/
     }
 
     public void updateStatus()
     {
         // STATUS
+
+        // FAME
 
         if (!PlayerPrefs.HasKey("hunger"))
         {
@@ -86,6 +96,8 @@ public class PlayerController : MonoBehaviour
             hunger = PlayerPrefs.GetInt("hunger");
         }
 
+        // FELICITA'
+
         if (!PlayerPrefs.HasKey("happiness"))
         {
             happiness = 100;
@@ -96,15 +108,55 @@ public class PlayerController : MonoBehaviour
             happiness = PlayerPrefs.GetInt("happiness");
         }
 
-        if (!PlayerPrefs.HasKey("restoreClickCount"))
+        // IGENE
+
+        if (!PlayerPrefs.HasKey("hygiene"))
         {
-            clickCount = 0;
-            PlayerPrefs.SetInt("restoreClickCount", clickCount);
+            hygiene = 100;
+            PlayerPrefs.SetInt("hygiene", hygiene);
         }
         else
         {
-            clickCount = PlayerPrefs.GetInt("restoreClickCount");
+            hygiene = PlayerPrefs.GetInt("hygiene");
         }
+
+        // CACCA (Ogni TOT ore attiva l'oggetto in scena)
+
+        if (!PlayerPrefs.HasKey("poo"))
+        {
+            poo = 4;
+            PlayerPrefs.SetInt("poo", poo);
+        }
+        else
+        {
+            poo = PlayerPrefs.GetInt("poo");
+        }
+
+        // CONTA DEI CLICK
+
+        if (!PlayerPrefs.HasKey("clickCount"))
+        {
+            clickCount = 0;
+            PlayerPrefs.SetInt("clickCount", clickCount);
+        }
+        else
+        {
+            clickCount = PlayerPrefs.GetInt("clickCount");
+        }
+
+        // CONTA DELLE AZIONI 
+
+        if (!PlayerPrefs.HasKey("actionsCount"))
+        {
+            actionsCount = 5;
+            PlayerPrefs.SetInt("actionsCount", actionsCount);
+        }
+        else
+        {
+            actionsCount = PlayerPrefs.GetInt("actionsCount");
+        }
+
+        // PRENDI L'ORA CORRENTE
 
         if (!PlayerPrefs.HasKey("then"))
         {
@@ -118,11 +170,6 @@ public class PlayerController : MonoBehaviour
         // Diminuisce la fame con il passare del tempo
 
         hunger -= (int)(ts.TotalHours * 5);                                                             // Sottrae ogni ora
-
-        if (hunger < 50 && hunger > 10)
-        {
-            textBox.ShowBar("Sei molto affamata");
-        }
 
         if (hunger < 0)
         {
@@ -139,6 +186,25 @@ public class PlayerController : MonoBehaviour
             Debug.Log("sei infelice");
         }
 
+        // Diminuisce la felicità con il passare del tempo
+
+        hygiene -= (int)(ts.TotalMinutes * 1);                                                             // Sottrae ogni ora
+        if (hygiene < 0)
+        {
+            hygiene = 0;
+            Debug.Log("stai puzzando");
+        }
+
+        // Diminuisce il tempo di apparizione della CACCA
+
+        poo -= (int)(ts.TotalMinutes * 1);                                                             // Sottrae ogni ora
+        if (poo < 0)
+        {
+            poo = 0;
+            pooButton.gameObject.SetActive(true);
+            Debug.Log("C'è la cacca");
+        }
+
         // RESETTA IL CLICKCOUNT A ZERO (DOPO 3 MINUTI) OSSERVARLO PER CREARE METODI COME DORMIRE O ALTRI EVENTI DI ATTESA
 
         clickCount -= (int)(ts.TotalMinutes * 1);
@@ -148,7 +214,15 @@ public class PlayerController : MonoBehaviour
             Debug.Log("puoi di nuovo cliccare");
         }
 
-        // SALVA OGNI 30 SEC
+        // LE TUE AZIONI DISPONIBILI
+
+        actionsCount += (int)(ts.TotalSeconds * 1);
+        if (actionsCount > 5)
+        {
+            actionsCount = 5;
+        }
+
+        // RITORNA OGNI 30 SECONDI IL TEMPO ATTUALE 
 
         if (serverTime)
         {
@@ -166,12 +240,11 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    #region UPDATE DEVICE (ONLY DEVICE)
     private void updateServer()
     {
         // Update server
     }
-
-    // SALVA PARTITA
 
     private void updateDevice()
     {
@@ -186,7 +259,6 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-
             return DateTime.Now - Convert.ToDateTime(PlayerPrefs.GetString("then"));
         }
     }
@@ -196,9 +268,9 @@ public class PlayerController : MonoBehaviour
         DateTime now = DateTime.Now;
         return now.Month + "/" + now.Day + "/" + now.Year + " " + now.Hour + ":" + now.Minute + ":" + now.Second;
     }
+    #endregion
 
-    // GET & SET
-
+    #region GET & SET
     public int _hunger
     {
         get { return hunger; }
@@ -211,17 +283,44 @@ public class PlayerController : MonoBehaviour
         set { happiness = value; }
     }
 
-    public int _restoreClickCount
+    public int _hygiene
+    {
+        get { return hygiene; }
+        set { hygiene = value; }
+    }
+
+    public int _poo
+    {
+        get { return poo; }
+        set { poo = value; }
+    }
+
+    public int _clickCount
     {
         get { return clickCount; }
         set { clickCount = value; }
     }
+
+    public int _actionsCount
+    {
+        get { return actionsCount; }
+        set { actionsCount = value; }
+    }
+    #endregion
 
     // AGGIORNA FAME
 
     public void UpdateHunger()
     {
         hunger += foodValue;                                                                        // Valore del cibo
+
+        // Animazione del numero
+
+        if(hunger < 100)
+        {
+            numbers[0].GetComponent<Animator>().SetTrigger("ScaleNumbers");
+            numbers[3].GetComponent<Animator>().SetTrigger("ScaleNumbers");
+        }
 
         if (hunger > 100)
         {
@@ -238,7 +337,7 @@ public class PlayerController : MonoBehaviour
     {
         if(isActive == true)
         {
-            StartCoroutine(StartAnimation("Eat_0", 5, 5));                                              // Nome Animazione, Tempo di attesa, Valore dell'oggetto
+            StartCoroutine(HungerAnimation("Eat_0", 1.2f, 5));                                              // Nome Animazione, Tempo di attesa, Valore dell'oggetto
             UpdateHunger();
         }
     }
@@ -247,7 +346,7 @@ public class PlayerController : MonoBehaviour
     {
         if(isActive == true)
         {
-            StartCoroutine(StartAnimation("Eat_1", 5, 2));                                                  // Nome Animazione, Tempo di attesa, Valore dell'oggetto
+            StartCoroutine(HungerAnimation("Eat_1", 1.2f, 5));                                                  // Nome Animazione, Tempo di attesa, Valore dell'oggetto
             UpdateHunger();
         }
     }
@@ -257,12 +356,64 @@ public class PlayerController : MonoBehaviour
     public void UpdateHappiness(int i)
     {
         happiness += i;
+
         if (happiness > 100)
         {
             happiness = 100;
         }
 
         SavePlayer();
+    }
+
+    // AGGIORNA SALUTE (Hygiene)
+
+    public void UpdateHygiene()
+    {
+        hygiene += hygieneValue;
+
+        if (hygiene < 100)
+        {
+            numbers[2].GetComponent<Animator>().SetTrigger("ScaleNumbers");
+            numbers[3].GetComponent<Animator>().SetTrigger("ScaleNumbers");
+        }
+
+        if (hygiene > 100)
+        {
+            hygiene = 100;
+        }
+
+        SavePlayer();
+    }
+
+    // AGGIORNA CACCA (POO)
+
+    public void UpdatePoo()
+    {
+        poo = 4;                                                                                    // Resetta (poo)                                                                                                    
+        pooButton.gameObject.SetActive(false);                                                      // Disattiva il Tasto (Poo)
+        happiness += 10;                                                                            // Aumenta la felicità
+
+        SavePlayer();                                                                               // SALVA IL GIOCATORE
+    }
+
+    // VALORI DELLA SALUTE (Hygiene)
+
+    public void HygieneValue_0()                                                                     
+    {
+        if (isActive == true)
+        {
+            StartCoroutine(HygieneAnimation("Eat_0", 1.2f, 5));                                      // Nome Animazione, Tempo di attesa, Valore dell'oggetto
+            UpdateHygiene();                                                                         // Aggiorna la Salute
+        }
+    }
+
+    public void HygieneValue_1()
+    {
+        if (isActive == true)
+        {
+            StartCoroutine(HygieneAnimation("Eat_1", 1.2f, 5));                                      // Nome Animazione, Tempo di attesa, Valore dell'oggetto
+            UpdateHygiene();                                                                         // Aggiorna la Salute
+        }
     }
 
     // SALVA IL GIOCATORE
@@ -274,19 +425,25 @@ public class PlayerController : MonoBehaviour
             updateDevice();
             PlayerPrefs.SetInt("hunger", hunger);
             PlayerPrefs.SetInt("happiness", happiness);
-            PlayerPrefs.SetInt("restoreClickCount", clickCount);
+            PlayerPrefs.SetInt("hygiene", hygiene);
+
+            PlayerPrefs.SetInt("poo", poo);
+
+            PlayerPrefs.SetInt("clickCount", clickCount);
+            PlayerPrefs.SetInt("actionsCount", actionsCount);
         }
     }
 
-    public IEnumerator StartAnimation(string name, float time, int value)
+    public IEnumerator HungerAnimation(string name, float time, int value)
     {
-        if(hunger < 100)
+        if(hunger < 100 && actionsCount <= 5 && actionsCount > 0)
         {
             // NOME ANIMAZIONE
             // TEMPO DI ATTESA
             // VALORE DELL'OGGETTO
 
             foodValue = value;
+            actionsCount -= 1;
 
             anim.SetTrigger(name);
 
@@ -302,12 +459,32 @@ public class PlayerController : MonoBehaviour
             isActive = true;
         }
 
-
+        
     }
 
-    public void UpdateTextBox()
+    public IEnumerator HygieneAnimation(string name, float time, int value)
     {
+        if (hygiene < 100 && actionsCount <= 5 && actionsCount > 0)
+        {
+            // NOME ANIMAZIONE
+            // TEMPO DI ATTESA
+            // VALORE DELL'OGGETTO
 
+            hygieneValue = value;
+            actionsCount -= 1;
+
+            anim.SetTrigger(name);
+
+            isActive = false;
+            yield return new WaitForSeconds(time);
+            isActive = true;
+        }
+        else
+        {
+            anim.SetTrigger("No");
+            isActive = false;
+            yield return new WaitForSeconds(time);
+            isActive = true;
+        }
     }
-
 }

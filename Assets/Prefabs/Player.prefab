@@ -98,6 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hunger: 0
   happiness: 0
+  health: 0
   clickCount: 0
   isActive: 0
 --- !u!212 &212769466778939628
