@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
 {
     private Animator anim;
 
+    public Button[] interactiveButtons = new Button[4];
     public TextBox textBox;
     private GameManager gameManager;
 
@@ -22,7 +23,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int poo;                                                   // Cacca
     public Button pooButton;                                                            // Tasto della Cacca
 
-    [SerializeField] private int clickCount;                                            // Conteggio dei Click
     [SerializeField] private int actionsCount;                                          // Quante azioni puoi fare
 
     private int hungerValue;
@@ -48,8 +48,6 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-        //updateStatus();
-
         if (Input.GetMouseButtonDown(0) && isActive == true)
         {
             Vector2 v = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
@@ -59,19 +57,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (hit.transform.gameObject.tag == "Player")
                 {
-                    /*clickCount++;                                                                           // aumenta conta dei click
-
-                    SavePlayer();                                                                       // Salva il Player
-
-                    if (clickCount > 3)
-                    {
-                        clickCount = 3;
-                        UpdateHappiness(0);
-                    }
-                    else
-                    {
-                        UpdateHappiness(1);
-                    }*/
+                    // Fai succedere qualcosa
                 }
             }
         }
@@ -170,7 +156,7 @@ public class PlayerController : MonoBehaviour
 
         // CONTA DEI CLICK
 
-        if (!PlayerPrefs.HasKey("clickCount"))
+        /*if (!PlayerPrefs.HasKey("clickCount"))
         {
             clickCount = 0;
             PlayerPrefs.SetInt("clickCount", clickCount);
@@ -178,7 +164,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             clickCount = PlayerPrefs.GetInt("clickCount");
-        }
+        }*/
 
         // CONTA DELLE AZIONI 
 
@@ -231,12 +217,12 @@ public class PlayerController : MonoBehaviour
 
         // RESETTA IL CLICKCOUNT A ZERO (DOPO 3 MINUTI) OSSERVARLO PER CREARE METODI COME DORMIRE O ALTRI EVENTI DI ATTESA
 
-        clickCount -= (int)(ts.TotalMinutes * 1);
+        /*clickCount -= (int)(ts.TotalMinutes * 1);
         if (clickCount < 0)
         {
             clickCount = 0;
             Debug.Log("puoi di nuovo cliccare");
-        }
+        }*/
 
         // LE TUE AZIONI DISPONIBILI
 
@@ -319,11 +305,11 @@ public class PlayerController : MonoBehaviour
         set { poo = value; }
     }
 
-    public int _clickCount
+    /*public int _clickCount
     {
         get { return clickCount; }
         set { clickCount = value; }
-    }
+    }*/
 
     public int _actionsCount
     {
@@ -480,7 +466,7 @@ public class PlayerController : MonoBehaviour
 
             PlayerPrefs.SetInt("poo", poo);
 
-            PlayerPrefs.SetInt("clickCount", clickCount);
+            //PlayerPrefs.SetInt("clickCount", clickCount);
             PlayerPrefs.SetInt("actionsCount", actionsCount);
         }
     }
@@ -565,5 +551,28 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public IEnumerator SleepAnimation(string name, string bar)
+    {
+        foreach(Button bt in interactiveButtons)
+        {
+            bt.enabled = false;
+        }
+
+        anim.SetTrigger(name);
+        textBox.ShowBar(bar);
+        yield return null;
+    }
+
+    public IEnumerator WakeUpAnimation(string name, string bar)
+    {
+        foreach (Button bt in interactiveButtons)
+        {
+            bt.enabled = true;
+        }
+
+        anim.SetTrigger(name);
+        textBox.ShowBar(bar);
+        yield return null;
+    }
 
 }

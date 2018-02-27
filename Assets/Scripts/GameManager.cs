@@ -46,7 +46,6 @@ public class GameManager : MonoBehaviour
 
         // MOSTRA IL BOX CON I TESTI (PANNELLO STATS)
 
-        // HUNGER
         #region HUNGER
         if(playerController._hunger < 100 && playerController._hunger > 90)
         {
@@ -90,6 +89,91 @@ public class GameManager : MonoBehaviour
         }
         #endregion
 
+        #region HAPPINESS
+        if (playerController._happiness < 100 && playerController._happiness > 90)
+        {
+            happinessStats.text = "Testo 9";
+        }
+        else if (playerController._happiness < 90 && playerController._happiness > 80)
+        {
+            happinessStats.text = "Testo 8";
+        }
+        else if (playerController._happiness < 80 && playerController._happiness > 70)
+        {
+            happinessStats.text = "Testo 7";
+        }
+        else if (playerController._happiness < 70 && playerController._happiness > 60)
+        {
+            happinessStats.text = "Testo 6";
+        }
+        else if (playerController._happiness < 60 && playerController._happiness > 50)
+        {
+            happinessStats.text = "Testo 5";
+        }
+        else if (playerController._happiness < 50 && playerController._happiness > 40)
+        {
+            happinessStats.text = "Testo 4";
+        }
+        else if (playerController._happiness < 40 && playerController._happiness > 30)
+        {
+            happinessStats.text = "Testo 3";
+        }
+        else if (playerController._happiness < 30 && playerController._happiness > 20)
+        {
+            happinessStats.text = "Testo 2";
+        }
+        else if (playerController._happiness < 20 && playerController._happiness > 10)
+        {
+            happinessStats.text = "Testo 1";
+        }
+        else if (playerController._happiness < 10 && playerController._happiness > 0)
+        {
+            happinessStats.text = "Testo 0";
+        }
+        #endregion
+
+        #region HYGIENE
+        if (playerController._hygiene < 100 && playerController._hygiene > 90)
+        {
+            hygieneStats.text = "Testo 9";
+        }
+        else if (playerController._hygiene < 90 && playerController._hygiene > 80)
+        {
+            hygieneStats.text = "Testo 8";
+        }
+        else if (playerController._hygiene < 80 && playerController._hygiene > 70)
+        {
+            hygieneStats.text = "Testo 7";
+        }
+        else if (playerController._hygiene < 70 && playerController._hygiene > 60)
+        {
+            hygieneStats.text = "Testo 6";
+        }
+        else if (playerController._hygiene < 60 && playerController._hygiene > 50)
+        {
+            hygieneStats.text = "Testo 5";
+        }
+        else if (playerController._hygiene < 50 && playerController._hygiene > 40)
+        {
+            hygieneStats.text = "Testo 4";
+        }
+        else if (playerController._hygiene < 40 && playerController._hygiene > 30)
+        {
+            hygieneStats.text = "Testo 3";
+        }
+        else if (playerController._hygiene < 30 && playerController._hygiene > 20)
+        {
+            hygieneStats.text = "Testo 2";
+        }
+        else if (playerController._hygiene < 20 && playerController._hygiene > 10)
+        {
+            hygieneStats.text = "Testo 1";
+        }
+        else if (playerController._hygiene < 10 && playerController._hygiene > 0)
+        {
+            hygieneStats.text = "Testo 0";
+        }
+        #endregion
     }
 
     void FixedUpdate() { Screen.SetResolution(480, 800, true); }

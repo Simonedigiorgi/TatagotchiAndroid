@@ -1819,6 +1819,11 @@ Prefab:
       propertyPath: numbers.Array.size
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 114742140273183658, guid: 0dcfe75df6de051438f266aa0acbf9e5,
+        type: 2}
+      propertyPath: interactiveButtons.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4924808266417210, guid: 0dcfe75df6de051438f266aa0acbf9e5, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1916,6 +1921,26 @@ Prefab:
       propertyPath: isActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114742140273183658, guid: 0dcfe75df6de051438f266aa0acbf9e5,
+        type: 2}
+      propertyPath: interactiveButtons.Array.data[3]
+      value: 
+      objectReference: {fileID: 943508395}
+    - target: {fileID: 114742140273183658, guid: 0dcfe75df6de051438f266aa0acbf9e5,
+        type: 2}
+      propertyPath: interactiveButtons.Array.data[0]
+      value: 
+      objectReference: {fileID: 1261953278}
+    - target: {fileID: 114742140273183658, guid: 0dcfe75df6de051438f266aa0acbf9e5,
+        type: 2}
+      propertyPath: interactiveButtons.Array.data[1]
+      value: 
+      objectReference: {fileID: 319813943}
+    - target: {fileID: 114742140273183658, guid: 0dcfe75df6de051438f266aa0acbf9e5,
+        type: 2}
+      propertyPath: interactiveButtons.Array.data[2]
+      value: 
+      objectReference: {fileID: 2065935879}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0dcfe75df6de051438f266aa0acbf9e5, type: 2}
   m_IsPrefabParent: 0
