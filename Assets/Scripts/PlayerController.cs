@@ -9,22 +9,24 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
 
     private TextBox textBox;
+    private GameManager gameManager;
 
     public Text[] numbers;
 
-    [SerializeField] private int hunger;
-    [SerializeField] private int happiness;
-    [SerializeField] private int hygiene;
+    [SerializeField] private int hunger;                                                // Fame
+    [SerializeField] private int happiness;                                             // Felicità
+    [SerializeField] private int hygiene;                                               // Igiene
 
     // Popup
 
-    [SerializeField] private int poo;
-    public Button pooButton;
+    [SerializeField] private int poo;                                                   // Cacca
+    public Button pooButton;                                                            // Tasto della Cacca
 
-    [SerializeField] private int clickCount;
+    [SerializeField] private int clickCount;                                            // Conteggio dei Click
     [SerializeField] private int actionsCount;                                          // Quante azioni puoi fare
 
     private int foodValue;
+    private int happinessValue;
     private int hygieneValue;
 
     private int pooValue;
@@ -38,6 +40,7 @@ public class PlayerController : MonoBehaviour
         isActive = true;
         anim = GetComponent<Animator>();
         textBox = FindObjectOfType<TextBox>();
+        gameManager = FindObjectOfType<GameManager>();
 
         //PlayerPrefs.SetString("then", "02/24/2018 21:00:00");
         updateStatus();
@@ -57,7 +60,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (hit.transform.gameObject.tag == "Player")
                 {
-                    clickCount++;                                                                           // aumenta conta dei click
+                    /*clickCount++;                                                                           // aumenta conta dei click
 
                     SavePlayer();                                                                       // Salva il Player
 
@@ -69,9 +72,26 @@ public class PlayerController : MonoBehaviour
                     else
                     {
                         UpdateHappiness(1);
-                    }
+                    }*/
                 }
             }
+        }
+
+        // SE LE VARIABILI SONO MAGGIORI/MINORI
+
+        if (hunger > 100)
+        {
+            hunger = 100;
+        }
+
+        if (happiness > 100)
+        {
+            happiness = 100;
+        }
+
+        if (hygiene > 100)
+        {
+            hygiene = 100;
         }
 
         if (actionsCount < 0)
@@ -197,7 +217,7 @@ public class PlayerController : MonoBehaviour
 
         // Diminuisce il tempo di apparizione della CACCA
 
-        poo -= (int)(ts.TotalMinutes * 1);                                                             // Sottrae ogni ora
+        poo -= (int)(ts.TotalSeconds * 1);                                                             // Sottrae ogni ora
         if (poo < 0)
         {
             poo = 0;
@@ -312,20 +332,20 @@ public class PlayerController : MonoBehaviour
 
     public void UpdateHunger()
     {
-        hunger += foodValue;                                                                        // Valore del cibo
+
+
+        if (isActive == true)
+        {
+            StartCoroutine(HungerAnimation("Eat_0", 1.2f/*, 5*/));                                  // Nome Animazione, Tempo di attesa, Valore dell'oggetto
+            //UpdateHunger();
+        }
 
         // Animazione del numero
 
-        if(hunger < 100)
+        if (hunger < 100)
         {
             numbers[0].GetComponent<Animator>().SetTrigger("ScaleNumbers");
             numbers[3].GetComponent<Animator>().SetTrigger("ScaleNumbers");
-        }
-
-        if (hunger > 100)
-        {
-            hunger = 100;
-            
         }
 
         SavePlayer();
@@ -335,51 +355,67 @@ public class PlayerController : MonoBehaviour
 
     public void AppleValue()                                                                            // Valore della mela (CIBO)
     {
-        if(isActive == true)
-        {
-            StartCoroutine(HungerAnimation("Eat_0", 1.2f, 5));                                              // Nome Animazione, Tempo di attesa, Valore dell'oggetto
-            UpdateHunger();
-        }
+        foodValue = 5;
+        gameManager.hungerBar.transform.GetChild(3).transform.GetChild(0).GetComponent<Text>().text = "Mangia una mela";
     }
 
     public void CoffeeValue()                                                                           // Valore del caffè (CIBO)
     {
-        if(isActive == true)
-        {
-            StartCoroutine(HungerAnimation("Eat_1", 1.2f, 5));                                                  // Nome Animazione, Tempo di attesa, Valore dell'oggetto
-            UpdateHunger();
-        }
+        foodValue = 3;
+        gameManager.hungerBar.transform.GetChild(3).transform.GetChild(0).GetComponent<Text>().text = "Prendi un caffè";
     }
 
     // AGGIORNA FELICITA'
 
-    public void UpdateHappiness(int i)
+    public void UpdateHappiness()
     {
-        happiness += i;
 
-        if (happiness > 100)
+
+        if (isActive == true)
         {
-            happiness = 100;
+            StartCoroutine(HappinessAnimation("Eat_0", 1.2f/*, 5*/));                                    // Nome Animazione, Tempo di attesa, Valore dell'oggetto
+            //UpdateHygiene();                                                                         // Aggiorna la Salute
         }
 
-        SavePlayer();
-    }
-
-    // AGGIORNA SALUTE (Hygiene)
-
-    public void UpdateHygiene()
-    {
-        hygiene += hygieneValue;
-
-        if (hygiene < 100)
+        if (happiness < 100)
         {
             numbers[2].GetComponent<Animator>().SetTrigger("ScaleNumbers");
             numbers[3].GetComponent<Animator>().SetTrigger("ScaleNumbers");
         }
 
-        if (hygiene > 100)
+        SavePlayer();
+    }
+
+    // VALORI DELLA FELICITA'
+
+    public void HappinessObj_0()
+    {
+        happinessValue = 5;
+        gameManager.happinessBar.transform.GetChild(3).transform.GetChild(0).GetComponent<Text>().text = "Balla";
+    }
+
+    public void HappinessObj_1()
+    {
+        happinessValue = 3;
+        gameManager.happinessBar.transform.GetChild(3).transform.GetChild(0).GetComponent<Text>().text = "Gioca";
+    }
+
+    // AGGIORNA SALUTE (Hygiene)
+
+    public void UpdateHygiene()                                                                     
+    {
+
+
+        if (isActive == true)
         {
-            hygiene = 100;
+            StartCoroutine(HygieneAnimation("Eat_0", 1.2f/*, 5*/));                                    // Nome Animazione, Tempo di attesa, Valore dell'oggetto
+            //UpdateHygiene();                                                                         // Aggiorna la Salute
+        }
+
+        if (hygiene < 100)
+        {
+            numbers[2].GetComponent<Animator>().SetTrigger("ScaleNumbers");
+            numbers[3].GetComponent<Animator>().SetTrigger("ScaleNumbers");
         }
 
         SavePlayer();
@@ -392,28 +428,23 @@ public class PlayerController : MonoBehaviour
         poo = 4;                                                                                    // Resetta (poo)                                                                                                    
         pooButton.gameObject.SetActive(false);                                                      // Disattiva il Tasto (Poo)
         happiness += 10;                                                                            // Aumenta la felicità
+        hygiene += 10;                                                                              // Aumenta l'igiene
 
         SavePlayer();                                                                               // SALVA IL GIOCATORE
     }
 
-    // VALORI DELLA SALUTE (Hygiene)
+    // VALORI DELL/IGIENE (Hygiene)
 
     public void HygieneValue_0()                                                                     
     {
-        if (isActive == true)
-        {
-            StartCoroutine(HygieneAnimation("Eat_0", 1.2f, 5));                                      // Nome Animazione, Tempo di attesa, Valore dell'oggetto
-            UpdateHygiene();                                                                         // Aggiorna la Salute
-        }
+        hygieneValue = 5;
+        gameManager.hygieneBar.transform.GetChild(3).transform.GetChild(0).GetComponent<Text>().text = "Lavati con la spugna";
     }
 
     public void HygieneValue_1()
     {
-        if (isActive == true)
-        {
-            StartCoroutine(HygieneAnimation("Eat_1", 1.2f, 5));                                      // Nome Animazione, Tempo di attesa, Valore dell'oggetto
-            UpdateHygiene();                                                                         // Aggiorna la Salute
-        }
+        hygieneValue = 3;
+        gameManager.hygieneBar.transform.GetChild(3).transform.GetChild(0).GetComponent<Text>().text = "Lavati con la pompa dell'acqua";
     }
 
     // SALVA IL GIOCATORE
@@ -434,15 +465,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public IEnumerator HungerAnimation(string name, float time, int value)
+    public IEnumerator HungerAnimation(string name, float time/*, int value*/)
     {
         if(hunger < 100 && actionsCount <= 5 && actionsCount > 0)
         {
+
+
             // NOME ANIMAZIONE
             // TEMPO DI ATTESA
             // VALORE DELL'OGGETTO
 
-            foodValue = value;
+            hunger += foodValue;                                                                        // Valore del cibo
             actionsCount -= 1;
 
             anim.SetTrigger(name);
@@ -462,15 +495,16 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    public IEnumerator HygieneAnimation(string name, float time, int value)
+    public IEnumerator HappinessAnimation(string name, float time/*, int value*/)
     {
-        if (hygiene < 100 && actionsCount <= 5 && actionsCount > 0)
+        if (happiness < 100 && actionsCount <= 5 && actionsCount > 0)
         {
             // NOME ANIMAZIONE
             // TEMPO DI ATTESA
             // VALORE DELL'OGGETTO
 
-            hygieneValue = value;
+            //hygieneValue = value;
+            happiness += happinessValue;
             actionsCount -= 1;
 
             anim.SetTrigger(name);
@@ -487,4 +521,33 @@ public class PlayerController : MonoBehaviour
             isActive = true;
         }
     }
+
+    public IEnumerator HygieneAnimation(string name, float time/*, int value*/)
+    {
+        if (hygiene < 100 && actionsCount <= 5 && actionsCount > 0)
+        {
+            // NOME ANIMAZIONE
+            // TEMPO DI ATTESA
+            // VALORE DELL'OGGETTO
+
+            //hygieneValue = value;
+            hygiene += hygieneValue;
+            actionsCount -= 1;
+
+            anim.SetTrigger(name);
+
+            isActive = false;
+            yield return new WaitForSeconds(time);
+            isActive = true;
+        }
+        else
+        {
+            anim.SetTrigger("No");
+            isActive = false;
+            yield return new WaitForSeconds(time);
+            isActive = true;
+        }
+    }
+
+
 }

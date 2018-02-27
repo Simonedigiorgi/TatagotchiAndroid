@@ -13,8 +13,9 @@ public class GameManager : MonoBehaviour
     public GameObject healthText;
     public GameObject actionsCountText;
 
-    public GameObject foodBar;
-    public GameObject healthBar;
+    public GameObject hungerBar;
+    public GameObject happinessBar;
+    public GameObject hygieneBar;
 
     //public Sprite foodIcons;
 
@@ -49,27 +50,32 @@ public class GameManager : MonoBehaviour
 
     void FixedUpdate() { Screen.SetResolution(480, 800, true); }
 
-    public void buttonBehaviour(int i)
+    public void buttonBehaviour(int i)                                                                  // Onclick Buttons
     {
         switch (i)
         {
             case (0):
             default:
-
+                hungerBar.SetActive(!hungerBar.activeInHierarchy);                                      // Toggle HungerBar 
+                happinessBar.SetActive(false);                                                          // Chiudi il pannello Happiness
+                hygieneBar.SetActive(false);                                                            // Chiudi il pannello Hygiene
                 break;
             case (1):
-
+                happinessBar.SetActive(!happinessBar.activeInHierarchy);                                // Toggle HappinessBar
+                hungerBar.SetActive(false);                                                             // Chiudi il pannello Hunger
+                hygieneBar.SetActive(false);                                                            // Chiudi il pannello Hygiene
                 break;
             case (2):
-                foodBar.SetActive(!foodBar.activeInHierarchy);
+                hygieneBar.SetActive(!hygieneBar.activeInHierarchy);                                    // Toggle HygieneBar                                      
+                hungerBar.SetActive(false);                                                             // Chiudi il pannello Hunger
+                happinessBar.SetActive(false);                                                          // Chiudi il pannello Happiness
                 break;
             case (3):
 
                 break;
             case (4):
-                healthBar.SetActive(!healthBar.activeInHierarchy);
-                /*player.GetComponent<PlayerController>().SavePlayer();
-                Application.Quit();*/
+                                                           
+
                 break;
         }
     }
