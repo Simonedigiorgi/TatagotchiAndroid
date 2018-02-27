@@ -37,7 +37,7 @@ public class TextBox : MonoBehaviour {
         {
             yield return new WaitForSeconds(1);                                                             // Testo di attesa per la comparsa
             transform.DOScale(new Vector2(1, 1), 0.3f);                                                     // Scala (1,1)                                                         
-            yield return new WaitForSeconds(5);                                                             // Tempo di attesa prima della scomparsa
+            yield return new WaitForSeconds(4);                                                             // Tempo di attesa prima della scomparsa
             transform.DOScale(new Vector2(0, 0), 0.3f);                                                     // Scala (0)
         }
     }

@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
 {
     private Animator anim;
 
-    private TextBox textBox;
+    public TextBox textBox;
     private GameManager gameManager;
 
     public Text[] numbers;
@@ -39,7 +39,6 @@ public class PlayerController : MonoBehaviour
     {
         isActive = true;
         anim = GetComponent<Animator>();
-        textBox = FindObjectOfType<TextBox>();
         gameManager = FindObjectOfType<GameManager>();
 
         //PlayerPrefs.SetString("then", "02/24/2018 21:00:00");
@@ -83,21 +82,38 @@ public class PlayerController : MonoBehaviour
         {
             hunger = 100;
         }
+        else if (hunger < 0)
+        {
+            hunger = 0;
+            Debug.Log("fine partita");
+        }
 
         if (happiness > 100)
         {
             happiness = 100;
+        }
+        else if (happiness < 0)
+        {
+            happiness = 0;
+            Debug.Log("sei infelice");
         }
 
         if (hygiene > 100)
         {
             hygiene = 100;
         }
+        else if (hygiene < 0)
+        {
+            hygiene = 0;
+            Debug.Log("stai puzzando");
+        }
+
 
         if (actionsCount < 0)
         {
             actionsCount = 0;
         }
+
     }
 
     public void updateStatus()
@@ -189,31 +205,19 @@ public class PlayerController : MonoBehaviour
 
         // Diminuisce la fame con il passare del tempo
 
-        hunger -= (int)(ts.TotalHours * 5);                                                             // Sottrae ogni ora
+        hunger -= (int)(ts.TotalMinutes * 1);                                                             // Sottrae ogni ora
 
-        if (hunger < 0)
-        {
-            hunger = 0;
-            Debug.Log("fine partita");
-        }
+
 
         // Diminuisce la felicità con il passare del tempo
 
         happiness -= (int)(ts.TotalMinutes * 1);                                                             // Sottrae ogni ora
-        if (happiness < 0)
-        {
-            happiness = 0;
-            Debug.Log("sei infelice");
-        }
+
 
         // Diminuisce l'igiene con il passare del tempo
 
         hygiene -= (int)(ts.TotalMinutes * 1);                                                             // Sottrae ogni ora
-        if (hygiene < 0)
-        {
-            hygiene = 0;
-            Debug.Log("stai puzzando");
-        }
+
 
         // Diminuisce il tempo di apparizione della CACCA
 
@@ -502,6 +506,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             anim.SetTrigger("No");
+            textBox.ShowBar("No! non mi va");
             isActive = false;
             yield return new WaitForSeconds(time);
             isActive = true;
@@ -527,6 +532,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             anim.SetTrigger("No");
+            textBox.ShowBar("No! sono troppo stanca");
             isActive = false;
             yield return new WaitForSeconds(time);
             isActive = true;
@@ -552,6 +558,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             anim.SetTrigger("No");
+            textBox.ShowBar("No! sono pulita anche dove pensavo non fosse possibile");
             isActive = false;
             yield return new WaitForSeconds(time);
             isActive = true;
