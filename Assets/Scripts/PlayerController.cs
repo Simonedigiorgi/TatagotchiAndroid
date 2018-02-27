@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int clickCount;                                            // Conteggio dei Click
     [SerializeField] private int actionsCount;                                          // Quante azioni puoi fare
 
-    private int foodValue;
+    private int hungerValue;
     private int happinessValue;
     private int hygieneValue;
 
@@ -206,7 +206,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("sei infelice");
         }
 
-        // Diminuisce la felicità con il passare del tempo
+        // Diminuisce l'igiene con il passare del tempo
 
         hygiene -= (int)(ts.TotalMinutes * 1);                                                             // Sottrae ogni ora
         if (hygiene < 0)
@@ -332,12 +332,17 @@ public class PlayerController : MonoBehaviour
 
     public void UpdateHunger()
     {
-
-
-        if (isActive == true)
+        if (isActive == true && hungerValue != 0)
         {
-            StartCoroutine(HungerAnimation("Eat_0", 1.2f/*, 5*/));                                  // Nome Animazione, Tempo di attesa, Valore dell'oggetto
-            //UpdateHunger();
+            if (hungerValue == 5)
+            {
+                StartCoroutine(HungerAnimation("Eat_0", 1.2f));                                    // Nome Animazione, Tempo di attesa, Valore dell'oggetto
+            }
+
+            if (hungerValue == 3)
+            {
+                StartCoroutine(HungerAnimation("Eat_1", 1.2f));                                    // Nome Animazione, Tempo di attesa, Valore dell'oggetto
+            }
         }
 
         // Animazione del numero
@@ -355,13 +360,13 @@ public class PlayerController : MonoBehaviour
 
     public void AppleValue()                                                                            // Valore della mela (CIBO)
     {
-        foodValue = 5;
+        hungerValue = 5;
         gameManager.hungerBar.transform.GetChild(3).transform.GetChild(0).GetComponent<Text>().text = "Mangia una mela";
     }
 
     public void CoffeeValue()                                                                           // Valore del caffè (CIBO)
     {
-        foodValue = 3;
+        hungerValue = 3;
         gameManager.hungerBar.transform.GetChild(3).transform.GetChild(0).GetComponent<Text>().text = "Prendi un caffè";
     }
 
@@ -369,12 +374,17 @@ public class PlayerController : MonoBehaviour
 
     public void UpdateHappiness()
     {
-
-
-        if (isActive == true)
+        if (isActive == true && happinessValue != 0)
         {
-            StartCoroutine(HappinessAnimation("Eat_0", 1.2f/*, 5*/));                                    // Nome Animazione, Tempo di attesa, Valore dell'oggetto
-            //UpdateHygiene();                                                                         // Aggiorna la Salute
+            if (happinessValue == 5)
+            {
+                StartCoroutine(HappinessAnimation("Eat_0", 1.2f));                                    // Nome Animazione, Tempo di attesa, Valore dell'oggetto
+            }
+
+            if (happinessValue == 3)
+            {
+                StartCoroutine(HappinessAnimation("Eat_1", 1.2f));                                    // Nome Animazione, Tempo di attesa, Valore dell'oggetto
+            }
         }
 
         if (happiness < 100)
@@ -404,12 +414,18 @@ public class PlayerController : MonoBehaviour
 
     public void UpdateHygiene()                                                                     
     {
-
-
-        if (isActive == true)
+        if (isActive == true && hygieneValue != 0)
         {
-            StartCoroutine(HygieneAnimation("Eat_0", 1.2f/*, 5*/));                                    // Nome Animazione, Tempo di attesa, Valore dell'oggetto
-            //UpdateHygiene();                                                                         // Aggiorna la Salute
+            if(hygieneValue == 5)
+            {
+                StartCoroutine(HygieneAnimation("Eat_0", 1.2f));                                    // Nome Animazione, Tempo di attesa, Valore dell'oggetto
+            }
+
+            if (hygieneValue == 3)
+            {
+                StartCoroutine(HygieneAnimation("Eat_1", 1.2f));                                    // Nome Animazione, Tempo di attesa, Valore dell'oggetto
+            }
+
         }
 
         if (hygiene < 100)
@@ -465,17 +481,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // COROUTINES
+
     public IEnumerator HungerAnimation(string name, float time/*, int value*/)
     {
         if(hunger < 100 && actionsCount <= 5 && actionsCount > 0)
         {
-
-
             // NOME ANIMAZIONE
             // TEMPO DI ATTESA
-            // VALORE DELL'OGGETTO
 
-            hunger += foodValue;                                                                        // Valore del cibo
+            hunger += hungerValue;                                                                        // Valore del cibo
             actionsCount -= 1;
 
             anim.SetTrigger(name);
@@ -491,19 +506,15 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(time);
             isActive = true;
         }
-
-        
     }
 
-    public IEnumerator HappinessAnimation(string name, float time/*, int value*/)
+    public IEnumerator HappinessAnimation(string name, float time)
     {
         if (happiness < 100 && actionsCount <= 5 && actionsCount > 0)
         {
             // NOME ANIMAZIONE
             // TEMPO DI ATTESA
-            // VALORE DELL'OGGETTO
 
-            //hygieneValue = value;
             happiness += happinessValue;
             actionsCount -= 1;
 
@@ -522,15 +533,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public IEnumerator HygieneAnimation(string name, float time/*, int value*/)
+    public IEnumerator HygieneAnimation(string name, float time)
     {
         if (hygiene < 100 && actionsCount <= 5 && actionsCount > 0)
         {
             // NOME ANIMAZIONE
             // TEMPO DI ATTESA
-            // VALORE DELL'OGGETTO
 
-            //hygieneValue = value;
             hygiene += hygieneValue;
             actionsCount -= 1;
 
