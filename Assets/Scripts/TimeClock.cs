@@ -9,6 +9,8 @@ public class TimeClock : MonoBehaviour
     public Text timeClock;                                                              // Nome nella gerarchia: TimeClock
     public TextBox textBox;                                                             // Nome nella gerarchia: TextBox
 
+    public Button[] interactiveButtons = new Button[5];                                 // Bottoni interagibili (Si disattivano durante il sonno)
+
     private PlayerController playerController;
 
     private bool isActive = true;
@@ -35,40 +37,35 @@ public class TimeClock : MonoBehaviour
             isActive = true;
         }
 
-        /*if (currentTime.Hours == 23 && currentTime.Minutes <= 30 && isActive == true)
-        {
-            textBox.ShowBar("E' quasi ora di andare a letto");
-            isActive = false;
-        }
-        else if (currentTime.Hours == 23 && currentTime.Minutes > 30)
-        {
-            isActive = true;
-        }*/
-
         // DORMI
 
-        if (currentTime.Hours == 22 && currentTime.Minutes <= 56 && isActive == true)
+        if (currentTime.Hours == 13 && currentTime.Minutes == 08 && currentTime.Seconds == 00)
         {
-            //textBox.ShowBar("Compi azione dormi");
-            StartCoroutine(playerController.SleepAnimation("Sleep", "Dormo"));                                    // Nome Animazione, Tempo di attesa, Valore dell'oggetto
-            isActive = false;
-        }
-        else if (currentTime.Hours == 22 && currentTime.Minutes > 56)
-        {
-            isActive = true;
-        }
+            playerController.GetComponent<Animator>().SetTrigger("Sleep");
 
-        // SVEGLIATI
+            foreach (Button bt in interactiveButtons)
+            {
+                bt.enabled = false;
+            }
 
-        if (currentTime.Hours == 22 && currentTime.Minutes <= 57 && isActive == true)
-        {
-            //textBox.ShowBar("Compi azione dormi");
-            StartCoroutine(playerController.WakeUpAnimation("WakeUp", "Mi sveglio"));                                    // Nome Animazione, Tempo di attesa, Valore dell'oggetto
-            isActive = false;
         }
-        else if (currentTime.Hours == 22 && currentTime.Minutes > 57)                                       // Risolvere il bug!!!!!!!!!!!!!!!!!
+        else if((currentTime.Hours >= 13 && currentTime.Minutes >= 08 && currentTime.Seconds >= 00) && (currentTime.Hours < 14 /*&& currentTime.Minutes < 12*/))
         {
-            isActive = true;
+            playerController.GetComponent<Animator>().SetTrigger("SleepIdle");
+
+            foreach (Button bt in interactiveButtons)
+            {
+                bt.enabled = false;
+            }
+        }
+        else if (currentTime.Hours == 14 && currentTime.Minutes == 01 && currentTime.Seconds == 00)
+        {
+            playerController.GetComponent<Animator>().SetTrigger("WakeUp");
+
+            foreach (Button bt in interactiveButtons)
+            {
+                bt.enabled = true;
+            }
         }
 
     }

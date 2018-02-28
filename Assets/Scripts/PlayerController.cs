@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
 {
     private Animator anim;
 
-    public Button[] interactiveButtons = new Button[4];
+    //public Button[] interactiveButtons = new Button[4];
     public TextBox textBox;
     private GameManager gameManager;
 
@@ -61,45 +61,6 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-
-        // SE LE VARIABILI SONO MAGGIORI/MINORI
-
-        if (hunger > 100)
-        {
-            hunger = 100;
-        }
-        else if (hunger < 0)
-        {
-            hunger = 0;
-            Debug.Log("fine partita");
-        }
-
-        if (happiness > 100)
-        {
-            happiness = 100;
-        }
-        else if (happiness < 0)
-        {
-            happiness = 0;
-            Debug.Log("sei infelice");
-        }
-
-        if (hygiene > 100)
-        {
-            hygiene = 100;
-        }
-        else if (hygiene < 0)
-        {
-            hygiene = 0;
-            Debug.Log("stai puzzando");
-        }
-
-
-        if (actionsCount < 0)
-        {
-            actionsCount = 0;
-        }
-
     }
 
     public void updateStatus()
@@ -154,18 +115,6 @@ public class PlayerController : MonoBehaviour
             poo = PlayerPrefs.GetInt("poo");
         }
 
-        // CONTA DEI CLICK
-
-        /*if (!PlayerPrefs.HasKey("clickCount"))
-        {
-            clickCount = 0;
-            PlayerPrefs.SetInt("clickCount", clickCount);
-        }
-        else
-        {
-            clickCount = PlayerPrefs.GetInt("clickCount");
-        }*/
-
         // CONTA DELLE AZIONI 
 
         if (!PlayerPrefs.HasKey("actionsCount"))
@@ -191,19 +140,43 @@ public class PlayerController : MonoBehaviour
 
         // Diminuisce la fame con il passare del tempo
 
-        hunger -= (int)(ts.TotalMinutes * 1);                                                             // Sottrae ogni ora
-
+        hunger -= (int)(ts.TotalMinutes * 2);                                                             // Sottrae ogni ora
+        if (hunger >= 100)
+        {
+            hunger = 100;
+        }
+        else if (hunger <= 0)
+        {
+            hunger = 0;
+            Debug.Log("fine partita");
+        }
 
 
         // Diminuisce la felicità con il passare del tempo
 
         happiness -= (int)(ts.TotalMinutes * 1);                                                             // Sottrae ogni ora
-
+        if (happiness >= 100)
+        {
+            happiness = 100;
+        }
+        else if (happiness <= 0)
+        {
+            happiness = 0;
+            Debug.Log("sei infelice");
+        }
 
         // Diminuisce l'igiene con il passare del tempo
 
         hygiene -= (int)(ts.TotalMinutes * 1);                                                             // Sottrae ogni ora
-
+        if (hygiene >= 100)
+        {
+            hygiene = 100;
+        }
+        else if (hygiene <= 0)
+        {
+            hygiene = 0;
+            Debug.Log("stai puzzando");
+        }
 
         // Diminuisce il tempo di apparizione della CACCA
 
@@ -215,21 +188,16 @@ public class PlayerController : MonoBehaviour
             Debug.Log("C'è la cacca");
         }
 
-        // RESETTA IL CLICKCOUNT A ZERO (DOPO 3 MINUTI) OSSERVARLO PER CREARE METODI COME DORMIRE O ALTRI EVENTI DI ATTESA
-
-        /*clickCount -= (int)(ts.TotalMinutes * 1);
-        if (clickCount < 0)
-        {
-            clickCount = 0;
-            Debug.Log("puoi di nuovo cliccare");
-        }*/
-
         // LE TUE AZIONI DISPONIBILI
 
         actionsCount += (int)(ts.TotalSeconds * 1);
-        if (actionsCount > 5)
+        if (actionsCount >= 5)
         {
             actionsCount = 5;
+        }
+        else if (actionsCount <= 0)
+        {
+            actionsCount = 0;
         }
 
         // RITORNA OGNI 30 SECONDI IL TEMPO ATTUALE 
@@ -473,7 +441,7 @@ public class PlayerController : MonoBehaviour
 
     // COROUTINES
 
-    public IEnumerator HungerAnimation(string name, float time/*, int value*/)
+    public IEnumerator HungerAnimation(string name, float time)
     {
         if(hunger < 100 && actionsCount <= 5 && actionsCount > 0)
         {
@@ -550,29 +518,4 @@ public class PlayerController : MonoBehaviour
             isActive = true;
         }
     }
-
-    public IEnumerator SleepAnimation(string name, string bar)
-    {
-        foreach(Button bt in interactiveButtons)
-        {
-            bt.enabled = false;
-        }
-
-        anim.SetTrigger(name);
-        textBox.ShowBar(bar);
-        yield return null;
-    }
-
-    public IEnumerator WakeUpAnimation(string name, string bar)
-    {
-        foreach (Button bt in interactiveButtons)
-        {
-            bt.enabled = true;
-        }
-
-        anim.SetTrigger(name);
-        textBox.ShowBar(bar);
-        yield return null;
-    }
-
 }

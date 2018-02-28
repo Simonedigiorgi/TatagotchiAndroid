@@ -3867,6 +3867,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeClock: {fileID: 1356366342}
   textBox: {fileID: 1332220851}
+  interactiveButtons:
+  - {fileID: 1261953278}
+  - {fileID: 319813943}
+  - {fileID: 2065935879}
+  - {fileID: 943508395}
+  - {fileID: 462966846}
 --- !u!114 &1356366342
 MonoBehaviour:
   m_ObjectHideFlags: 0

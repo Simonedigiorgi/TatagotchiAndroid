@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     private TextBox textBox;
     private PlayerController playerController;
 
+
+
     public GameObject hungerText;                                                           // Valore numerico della fame
     public GameObject happinessText;                                                        // Valore numerico della felicità
     public GameObject hygieneText;                                                          // Valore numerico dell'igiene
@@ -47,7 +49,7 @@ public class GameManager : MonoBehaviour
         // MOSTRA IL BOX CON I TESTI (PANNELLO STATS)
 
         #region HUNGER
-        if(playerController._hunger < 100 && playerController._hunger > 90)
+        if(playerController._hunger <= 100 && playerController._hunger > 90)
         {
             hungerStats.text = "Testo 9"; 
         }
@@ -83,14 +85,14 @@ public class GameManager : MonoBehaviour
         {
             hungerStats.text = "Testo 1";
         }
-        else if (playerController._hunger < 10 && playerController._hunger > 0)
+        else if (playerController._hunger < 10 && playerController._hunger >= 0)
         {
             hungerStats.text = "Testo 0";
         }
         #endregion
 
         #region HAPPINESS
-        if (playerController._happiness < 100 && playerController._happiness > 90)
+        if (playerController._happiness <= 100 && playerController._happiness > 90)
         {
             happinessStats.text = "Testo 9";
         }
@@ -126,14 +128,14 @@ public class GameManager : MonoBehaviour
         {
             happinessStats.text = "Testo 1";
         }
-        else if (playerController._happiness < 10 && playerController._happiness > 0)
+        else if (playerController._happiness < 10 && playerController._happiness >= 0)
         {
             happinessStats.text = "Testo 0";
         }
         #endregion
 
         #region HYGIENE
-        if (playerController._hygiene < 100 && playerController._hygiene > 90)
+        if (playerController._hygiene <= 100 && playerController._hygiene > 90)
         {
             hygieneStats.text = "Testo 9";
         }
@@ -169,7 +171,7 @@ public class GameManager : MonoBehaviour
         {
             hygieneStats.text = "Testo 1";
         }
-        else if (playerController._hygiene < 10 && playerController._hygiene > 0)
+        else if (playerController._hygiene < 10 && playerController._hygiene >= 0)
         {
             hygieneStats.text = "Testo 0";
         }
