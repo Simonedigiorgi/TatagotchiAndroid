@@ -5,68 +5,93 @@ using UnityEngine.UI;
 
 public class TimeClock : MonoBehaviour
 {
+    private TextBox textBox;                                                            // Nome nella gerarchia: TextBox
+    private PlayerController playerController;                                          // PLAYERCONTROLLER
+    private GameManager gameManager;                                                    // GAMEMANAGER
 
-    public Text timeClock;                                                              // Nome nella gerarchia: TimeClock
-    public TextBox textBox;                                                             // Nome nella gerarchia: TextBox
-
-    public Button[] interactiveButtons = new Button[5];                                 // Bottoni interagibili (Si disattivano durante il sonno)
-
-    private PlayerController playerController;
-
-    private bool isActive = true;
+    private bool isActive = true;                                                       // E' Attivo
 
     void Start()
     {
         playerController = FindObjectOfType<PlayerController>();
+        gameManager = FindObjectOfType<GameManager>();
+        textBox = FindObjectOfType<TextBox>();
     }
 
     void Update()
     {
-        TimeSpan currentTime = DateTime.Now.TimeOfDay;
-        timeClock.text = currentTime.ToString();
+        TimeSpan currentTime = DateTime.Now.TimeOfDay;                                  // Prendi l'ora del giorno
+        GetComponent<Text>().text = currentTime.ToString();                             // Mostra l'orario a schermo
 
-        // EVENTI AD ORARI PRESTABILITI
+        #region EVENTI AD ORARI PRESTABILITI (UTILIZZA LA TEXTBOX)
 
-        if (currentTime.Hours == 19 && currentTime.Minutes <= 30 && isActive == true)
+        if (currentTime.Hours == 20 && currentTime.Minutes <= 40 && isActive == true)
         {
             textBox.ShowBar("E' quasi ora di cena :)");
             isActive = false;
         }
-        else if(currentTime.Hours == 19 && currentTime.Minutes > 30)
+        else if(currentTime.Hours == 20 && currentTime.Minutes > 40)
         {
             isActive = true;
         }
 
-        // DORMI
+        #endregion
 
-        if (currentTime.Hours == 13 && currentTime.Minutes == 08 && currentTime.Seconds == 00)
+        #region EVENTO (DORMI) // GLI ORARI NON SONO ANCORA SISTEMATI A DOVERE
+
+        // ANIMAZIONE INIZIALE
+
+        if (currentTime.Hours == 20 && currentTime.Minutes == 30 && currentTime.Seconds == 00)
         {
             playerController.GetComponent<Animator>().SetTrigger("Sleep");
 
-            foreach (Button bt in interactiveButtons)
+            foreach (Button bt in gameManager.gameButtons)
+            {
+                bt.enabled = false;
+            }
+
+            foreach (Button bt in gameManager.objectButtons)
             {
                 bt.enabled = false;
             }
 
         }
-        else if((currentTime.Hours >= 13 && currentTime.Minutes >= 08 && currentTime.Seconds >= 00) && (currentTime.Hours < 14 /*&& currentTime.Minutes < 12*/))
+
+        // ANIMAZIONE DORMI (RIMANE PER TUTTE LE ORE STABILITE)
+
+        else if((currentTime.Hours >= 20 && currentTime.Minutes >= 30 && currentTime.Seconds >= 00) && (currentTime.Hours < 21 && currentTime.Minutes < 00))
         {
             playerController.GetComponent<Animator>().SetTrigger("SleepIdle");
 
-            foreach (Button bt in interactiveButtons)
+            foreach (Button bt in gameManager.gameButtons)
+            {
+                bt.enabled = false;
+            }
+
+            foreach (Button bt in gameManager.objectButtons)
             {
                 bt.enabled = false;
             }
         }
-        else if (currentTime.Hours == 14 && currentTime.Minutes == 01 && currentTime.Seconds == 00)
+
+        // ANIMAZIONE SVEGLIA
+
+        else if (currentTime.Hours == 20 && currentTime.Minutes == 31 && currentTime.Seconds == 00)
         {
             playerController.GetComponent<Animator>().SetTrigger("WakeUp");
 
-            foreach (Button bt in interactiveButtons)
+            foreach (Button bt in gameManager.gameButtons)
             {
                 bt.enabled = true;
             }
+
+            foreach (Button bt in gameManager.objectButtons)
+            {
+                bt.enabled = false;
+            }
         }
+
+        #endregion
 
     }
 }

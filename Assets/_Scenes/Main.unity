@@ -1330,7 +1330,7 @@ GameObject:
   - component: {fileID: 462966847}
   - component: {fileID: 462966846}
   m_Layer: 5
-  m_Name: Poo
+  m_Name: Poo_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3830,7 +3830,7 @@ GameObject:
   - component: {fileID: 1356366341}
   m_Layer: 5
   m_Name: TimeClock
-  m_TagString: Untagged
+  m_TagString: TimeClock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3865,14 +3865,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 123ff52cff45a1f4ca40ce56b92c8202, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeClock: {fileID: 1356366342}
-  textBox: {fileID: 1332220851}
-  interactiveButtons:
-  - {fileID: 1261953278}
-  - {fileID: 319813943}
-  - {fileID: 2065935879}
-  - {fileID: 943508395}
-  - {fileID: 462966846}
 --- !u!114 &1356366342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4538,7 +4530,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -90, y: 0}
+  m_AnchoredPosition: {x: -45, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1577948358
@@ -4698,7 +4690,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1594635494}
   m_Layer: 5
-  m_Name: Objects
+  m_Name: Objects_Buttons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5374,6 +5366,16 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114865828445430542, guid: ee185092a167c4d45a02b86e79ddd5ad,
+        type: 2}
+      propertyPath: gameButtons.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114865828445430542, guid: ee185092a167c4d45a02b86e79ddd5ad,
+        type: 2}
+      propertyPath: objectButtons.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4355365542746358, guid: ee185092a167c4d45a02b86e79ddd5ad, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -5486,6 +5488,56 @@ Prefab:
       propertyPath: hygieneText
       value: 
       objectReference: {fileID: 1265363602}
+    - target: {fileID: 114865828445430542, guid: ee185092a167c4d45a02b86e79ddd5ad,
+        type: 2}
+      propertyPath: interactiveButtons.Array.data[0]
+      value: 
+      objectReference: {fileID: 1261953278}
+    - target: {fileID: 114865828445430542, guid: ee185092a167c4d45a02b86e79ddd5ad,
+        type: 2}
+      propertyPath: interactiveButtons.Array.data[1]
+      value: 
+      objectReference: {fileID: 319813943}
+    - target: {fileID: 114865828445430542, guid: ee185092a167c4d45a02b86e79ddd5ad,
+        type: 2}
+      propertyPath: interactiveButtons.Array.data[2]
+      value: 
+      objectReference: {fileID: 2065935879}
+    - target: {fileID: 114865828445430542, guid: ee185092a167c4d45a02b86e79ddd5ad,
+        type: 2}
+      propertyPath: interactiveButtons.Array.data[3]
+      value: 
+      objectReference: {fileID: 943508395}
+    - target: {fileID: 114865828445430542, guid: ee185092a167c4d45a02b86e79ddd5ad,
+        type: 2}
+      propertyPath: interactiveButtons.Array.data[4]
+      value: 
+      objectReference: {fileID: 462966846}
+    - target: {fileID: 114865828445430542, guid: ee185092a167c4d45a02b86e79ddd5ad,
+        type: 2}
+      propertyPath: gameButtons.Array.data[0]
+      value: 
+      objectReference: {fileID: 1261953278}
+    - target: {fileID: 114865828445430542, guid: ee185092a167c4d45a02b86e79ddd5ad,
+        type: 2}
+      propertyPath: gameButtons.Array.data[1]
+      value: 
+      objectReference: {fileID: 319813943}
+    - target: {fileID: 114865828445430542, guid: ee185092a167c4d45a02b86e79ddd5ad,
+        type: 2}
+      propertyPath: gameButtons.Array.data[2]
+      value: 
+      objectReference: {fileID: 2065935879}
+    - target: {fileID: 114865828445430542, guid: ee185092a167c4d45a02b86e79ddd5ad,
+        type: 2}
+      propertyPath: gameButtons.Array.data[3]
+      value: 
+      objectReference: {fileID: 943508395}
+    - target: {fileID: 114865828445430542, guid: ee185092a167c4d45a02b86e79ddd5ad,
+        type: 2}
+      propertyPath: objectButtons.Array.data[0]
+      value: 
+      objectReference: {fileID: 462966846}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ee185092a167c4d45a02b86e79ddd5ad, type: 2}
   m_IsPrefabParent: 0

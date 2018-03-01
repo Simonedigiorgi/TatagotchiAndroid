@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -8,7 +9,8 @@ public class GameManager : MonoBehaviour
     private TextBox textBox;
     private PlayerController playerController;
 
-
+    public Button[] gameButtons;                                                            // Bottoni di gioco (Hunger, Happiness, Hygiene, Stats)
+    public Button[] objectButtons;                                                          // Bottoni degli oggetti di gioco (Poo)
 
     public GameObject hungerText;                                                           // Valore numerico della fame
     public GameObject happinessText;                                                        // Valore numerico della felicità
@@ -46,10 +48,8 @@ public class GameManager : MonoBehaviour
         hygieneText.GetComponent<Text>().text = player.GetComponent<PlayerController>()._hygiene.ToString();
         actionsCountText.GetComponent<Text>().text = player.GetComponent<PlayerController>()._actionsCount.ToString();
 
-        // MOSTRA IL BOX CON I TESTI (PANNELLO STATS)
-
-        #region HUNGER
-        if(playerController._hunger <= 100 && playerController._hunger > 90)
+        #region HUNGER / MOSTRA IL BOX CON I TESTI (PANNELLO STATS)
+        if (playerController._hunger <= 100 && playerController._hunger > 90)
         {
             hungerStats.text = "Testo 9"; 
         }
@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviour
         }
         #endregion
 
-        #region HAPPINESS
+        #region HAPPINESS / MOSTRA IL BOX CON I TESTI (PANNELLO STATS)
         if (playerController._happiness <= 100 && playerController._happiness > 90)
         {
             happinessStats.text = "Testo 9";
@@ -134,7 +134,7 @@ public class GameManager : MonoBehaviour
         }
         #endregion
 
-        #region HYGIENE
+        #region HYGIENE / MOSTRA IL BOX CON I TESTI (PANNELLO STATS)
         if (playerController._hygiene <= 100 && playerController._hygiene > 90)
         {
             hygieneStats.text = "Testo 9";

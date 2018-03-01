@@ -2,28 +2,25 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine.UI;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     private Animator anim;
 
-    //public Button[] interactiveButtons = new Button[4];
-    public TextBox textBox;
+    private TextBox textBox;
     private GameManager gameManager;
 
-    public Text[] numbers;
-
-    [SerializeField] private int hunger;                                                // Fame
-    [SerializeField] private int happiness;                                             // Felicità
-    [SerializeField] private int hygiene;                                               // Igiene
+    [BoxGroup("Bisogni")] [SerializeField] private int hunger;                          // Fame
+    [BoxGroup("Bisogni")] [SerializeField] private int happiness;                       // Felicità
+    [BoxGroup("Bisogni")] [SerializeField] private int hygiene;                         // Igiene
 
     // Popup
 
-    [SerializeField] private int poo;                                                   // Cacca
-    public Button pooButton;                                                            // Tasto della Cacca
+    [BoxGroup("Oggetti")] [SerializeField] private int poo;                                                   // Cacca
 
-    [SerializeField] private int actionsCount;                                          // Quante azioni puoi fare
+    [BoxGroup("Generali")] [SerializeField] private int actionsCount;                                          // Quante azioni puoi fare
 
     private int hungerValue;
     private int happinessValue;
@@ -33,13 +30,15 @@ public class PlayerController : MonoBehaviour
 
     private bool serverTime;
 
-    public bool isActive;
+    [BoxGroup("Generali")] public bool isActive;
 
     void Start()
     {
         isActive = true;
+
         anim = GetComponent<Animator>();
         gameManager = FindObjectOfType<GameManager>();
+        textBox = FindObjectOfType<TextBox>();
 
         //PlayerPrefs.SetString("then", "02/24/2018 21:00:00");
         updateStatus();
@@ -184,7 +183,8 @@ public class PlayerController : MonoBehaviour
         if (poo < 0)
         {
             poo = 0;
-            pooButton.gameObject.SetActive(true);
+            gameManager.objectButtons[0].gameObject.SetActive(true);
+            //pooButton.gameObject.SetActive(true);
             Debug.Log("C'è la cacca");
         }
 
@@ -210,11 +210,6 @@ public class PlayerController : MonoBehaviour
         {
             InvokeRepeating("updateDevice", 0f, 30f);
         }
-
-        /*if (!serverTime)
-        {
-            InvokeRepeating("updateDevice", 0f, 30f);
-        }*/
 
     }
 
@@ -305,11 +300,11 @@ public class PlayerController : MonoBehaviour
 
         // Animazione del numero
 
-        if (hunger < 100)
+        /*if (hunger < 100)
         {
             numbers[0].GetComponent<Animator>().SetTrigger("ScaleNumbers");
             numbers[3].GetComponent<Animator>().SetTrigger("ScaleNumbers");
-        }
+        }*/
 
         SavePlayer();
     }
@@ -345,11 +340,11 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (happiness < 100)
+        /*if (happiness < 100)
         {
             numbers[2].GetComponent<Animator>().SetTrigger("ScaleNumbers");
             numbers[3].GetComponent<Animator>().SetTrigger("ScaleNumbers");
-        }
+        }*/
 
         SavePlayer();
     }
@@ -386,11 +381,11 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        if (hygiene < 100)
+        /*if (hygiene < 100)
         {
             numbers[2].GetComponent<Animator>().SetTrigger("ScaleNumbers");
             numbers[3].GetComponent<Animator>().SetTrigger("ScaleNumbers");
-        }
+        }*/
 
         SavePlayer();
     }
@@ -399,8 +394,8 @@ public class PlayerController : MonoBehaviour
 
     public void UpdatePoo()
     {
-        poo = 4;                                                                                    // Resetta (poo)                                                                                                    
-        pooButton.gameObject.SetActive(false);                                                      // Disattiva il Tasto (Poo)
+        poo = 4;                                                                                    // Resetta (poo)  
+        gameManager.objectButtons[0].gameObject.SetActive(false);                                   // Disattiva il Tasto (Poo)
         happiness += 10;                                                                            // Aumenta la felicità
         hygiene += 10;                                                                              // Aumenta l'igiene
 
@@ -434,12 +429,11 @@ public class PlayerController : MonoBehaviour
 
             PlayerPrefs.SetInt("poo", poo);
 
-            //PlayerPrefs.SetInt("clickCount", clickCount);
             PlayerPrefs.SetInt("actionsCount", actionsCount);
         }
     }
 
-    // COROUTINES
+    #region COROUTINES (HUNGER, HAPPINESS, HYGIENE)
 
     public IEnumerator HungerAnimation(string name, float time)
     {
@@ -518,4 +512,6 @@ public class PlayerController : MonoBehaviour
             isActive = true;
         }
     }
+
+    #endregion
 }

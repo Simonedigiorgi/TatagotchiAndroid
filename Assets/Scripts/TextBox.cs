@@ -11,12 +11,7 @@ public class TextBox : MonoBehaviour {
 
 	void Awake () {
 
-        if(selectBox == SelectBox.Text)
-        {
-            transform.DOScale(new Vector2(0, 0), 0);                                                        // Scala iniziale (0)
-        }
-
-        if (selectBox == SelectBox.Box)
+        if(selectBox == SelectBox.Text || selectBox == SelectBox.Box)
         {
             transform.DOScale(new Vector2(0, 0), 0);                                                        // Scala iniziale (0)
         }
