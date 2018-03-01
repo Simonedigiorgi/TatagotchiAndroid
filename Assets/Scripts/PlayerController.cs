@@ -21,16 +21,17 @@ public class PlayerController : MonoBehaviour
     [BoxGroup("Oggetti")] [SerializeField] private int poo;                                                   // Cacca
 
     [BoxGroup("Generali")] [SerializeField] private int actionsCount;                                          // Quante azioni puoi fare
+    [BoxGroup("Generali")] public bool isActive;
 
     private int hungerValue;
     private int happinessValue;
     private int hygieneValue;
 
-    private int pooValue;
+
+    //private int pooValue;
 
     private bool serverTime;
 
-    [BoxGroup("Generali")] public bool isActive;
 
     void Start()
     {

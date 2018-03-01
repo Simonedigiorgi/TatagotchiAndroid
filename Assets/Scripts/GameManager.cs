@@ -6,35 +6,30 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    private TextBox textBox;
-    private PlayerController playerController;
+    private TextBox textBox;                                                                // TEXTBOX
+    private PlayerController playerController;                                              // PLAYERCONTROLLER
 
     public Button[] gameButtons;                                                            // Bottoni di gioco (Hunger, Happiness, Hygiene, Stats)
     public Button[] objectButtons;                                                          // Bottoni degli oggetti di gioco (Poo)
 
-    public GameObject hungerText;                                                           // Valore numerico della fame
-    public GameObject happinessText;                                                        // Valore numerico della felicità
-    public GameObject hygieneText;                                                          // Valore numerico dell'igiene
+    [BoxGroup("Valori numerici a schermo (STATS)")] public GameObject hungerText;           // Valore numerico della fame
+    [BoxGroup("Valori numerici a schermo (STATS)")] public GameObject happinessText;        // Valore numerico della felicità
+    [BoxGroup("Valori numerici a schermo (STATS)")] public GameObject hygieneText;          // Valore numerico dell'igiene
+    [BoxGroup("Valori numerici a schermo (STATS)")] public GameObject actionsText;          // Testo delle azioni rimanenti (numero)                                                         
 
-    public Text hungerStats;
-    public Text happinessStats;
-    public Text hygieneStats;
+    [BoxGroup("Testo nelle STATS")] public Text hungerStats;                                // Testo della fame nelle (STATS)
+    [BoxGroup("Testo nelle STATS")] public Text happinessStats;                             // Testo della felicità nelle (STATS)
+    [BoxGroup("Testo nelle STATS")] public Text hygieneStats;                               // Testo dell'igiene nelle (STATS)
 
-    public GameObject actionsCountText;
+    [BoxGroup("Pannelli")] public GameObject hungerBar;                                     // Pannello della fame
+    [BoxGroup("Pannelli")] public GameObject happinessBar;                                  // Pannello della felicità
+    [BoxGroup("Pannelli")] public GameObject hygieneBar;                                    // Pannello dell'igiene
+    [BoxGroup("Pannelli")] public GameObject statsBar;                                      // Pannello delle statistiche
 
-    public GameObject hungerBar;
-    public GameObject happinessBar;
-    public GameObject hygieneBar;
-    public GameObject statsBar;
-
-    public GameObject player;
-
-    private bool isActive = true;
+    private bool isActive = true;                                                           // E' Attivo?
 
     void Start()
     {
-        print(Time.realtimeSinceStartup);
-
         textBox = FindObjectOfType<TextBox>();
         playerController = FindObjectOfType<PlayerController>();
     }
@@ -43,10 +38,10 @@ public class GameManager : MonoBehaviour
     {
         // MOSTRA I VALORI NUMERICI DELLE NECESSITA'
 
-        hungerText.GetComponent<Text>().text = player.GetComponent<PlayerController>()._hunger.ToString();
-        happinessText.GetComponent<Text>().text = player.GetComponent<PlayerController>()._happiness.ToString();
-        hygieneText.GetComponent<Text>().text = player.GetComponent<PlayerController>()._hygiene.ToString();
-        actionsCountText.GetComponent<Text>().text = player.GetComponent<PlayerController>()._actionsCount.ToString();
+        hungerText.GetComponent<Text>().text = playerController._hunger.ToString();
+        happinessText.GetComponent<Text>().text = playerController._happiness.ToString();
+        hygieneText.GetComponent<Text>().text = playerController._hygiene.ToString();
+        actionsText.GetComponent<Text>().text = playerController._actionsCount.ToString();
 
         #region HUNGER / MOSTRA IL BOX CON I TESTI (PANNELLO STATS)
         if (playerController._hunger <= 100 && playerController._hunger > 90)
@@ -189,7 +184,8 @@ public class GameManager : MonoBehaviour
                 hungerBar.SetActive(!hungerBar.activeInHierarchy);                                      // Toggle HungerBar 
                 happinessBar.SetActive(false);                                                          // Chiudi il pannello Happiness
                 hygieneBar.SetActive(false);                                                            // Chiudi il pannello Hygiene
-                statsBar.SetActive(false);                                                              // Chiudi il pannello Stats                                                                  
+                statsBar.SetActive(false);                                                              // Chiudi il pannello Stats    
+                
                 break;
             case (1):
                 happinessBar.SetActive(!happinessBar.activeInHierarchy);                                // Toggle HappinessBar
@@ -216,11 +212,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /*public void SelectFood(int i)
-    {
-        //player.GetComponent<Player>().UpdateHunger();
-        //Toggle(foodPanel);                                                                          // Chiudi il pannello cibo
-    }*/
+    // TOGGLE DEI PANNELLI (E' USATO DAL TASTO DI CONFERMA NEI PANNELLI)
 
     public void Toggle(GameObject g)
     {

@@ -1941,6 +1941,11 @@ Prefab:
       propertyPath: interactiveButtons.Array.data[2]
       value: 
       objectReference: {fileID: 2065935879}
+    - target: {fileID: 114742140273183658, guid: 0dcfe75df6de051438f266aa0acbf9e5,
+        type: 2}
+      propertyPath: secondObject
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0dcfe75df6de051438f266aa0acbf9e5, type: 2}
   m_IsPrefabParent: 0
@@ -5538,6 +5543,11 @@ Prefab:
       propertyPath: objectButtons.Array.data[0]
       value: 
       objectReference: {fileID: 462966846}
+    - target: {fileID: 114865828445430542, guid: ee185092a167c4d45a02b86e79ddd5ad,
+        type: 2}
+      propertyPath: actionsText
+      value: 
+      objectReference: {fileID: 263948433}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ee185092a167c4d45a02b86e79ddd5ad, type: 2}
   m_IsPrefabParent: 0
