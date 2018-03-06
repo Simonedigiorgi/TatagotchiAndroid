@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using DG.Tweening;
 using UnityEngine.UI;
 
 public class TimeClock : MonoBehaviour
@@ -9,10 +10,14 @@ public class TimeClock : MonoBehaviour
     private PlayerController playerController;                                          // PLAYERCONTROLLER
     private GameManager gameManager;                                                    // GAMEMANAGER
 
+    public Image sleepImage;
+
     private bool isActive = true;                                                       // E' Attivo
 
     void Start()
     {
+        //sleepImage.enabled = true;
+        sleepImage.DOFade(0, 0);
         playerController = FindObjectOfType<PlayerController>();
         gameManager = FindObjectOfType<GameManager>();
         textBox = FindObjectOfType<TextBox>();
@@ -41,9 +46,11 @@ public class TimeClock : MonoBehaviour
 
         // ANIMAZIONE INIZIALE
 
-        if (currentTime.Hours == 20 && currentTime.Minutes == 30 && currentTime.Seconds == 00)
+        if (currentTime.Hours == 20 && currentTime.Minutes == 18 && currentTime.Seconds == 00)
         {
             playerController.GetComponent<Animator>().SetTrigger("Sleep");
+            sleepImage.enabled = true;
+            sleepImage.DOFade(1, 1);
 
             foreach (Button bt in gameManager.gameButtons)
             {
@@ -54,14 +61,21 @@ public class TimeClock : MonoBehaviour
             {
                 bt.enabled = false;
             }
+
+            gameManager.hungerBar.SetActive(false);                                                             // Chiudi il pannello Hunger
+            gameManager.happinessBar.SetActive(false);                                                          // Chiudi il pannello Happiness
+            gameManager.hygieneBar.SetActive(false);                                                            // Chiudi il pannello Hygiene
+            gameManager.statsBar.SetActive(false);                                                              // Chiudi il pannello Stats 
 
         }
 
         // ANIMAZIONE DORMI (RIMANE PER TUTTE LE ORE STABILITE)
 
-        else if((currentTime.Hours >= 20 && currentTime.Minutes >= 30 && currentTime.Seconds >= 00) && (currentTime.Hours < 21 && currentTime.Minutes < 00))
+        if((currentTime.Hours >= 20 && currentTime.Minutes > 18 /*&& currentTime.Seconds >= 00*/) && (currentTime.Hours < 08 && currentTime.Minutes < 00))
         {
             playerController.GetComponent<Animator>().SetTrigger("SleepIdle");
+            sleepImage.enabled = true;
+            sleepImage.DOFade(1, 0);
 
             foreach (Button bt in gameManager.gameButtons)
             {
@@ -72,13 +86,21 @@ public class TimeClock : MonoBehaviour
             {
                 bt.enabled = false;
             }
+
+            playerController.isNecessitiesActive = false;
+        }
+        else
+        {
+            playerController.isNecessitiesActive = true;
         }
 
         // ANIMAZIONE SVEGLIA
 
-        else if (currentTime.Hours == 20 && currentTime.Minutes == 31 && currentTime.Seconds == 00)
+        if (currentTime.Hours == 20 && currentTime.Minutes == 19 && currentTime.Seconds == 00)
         {
             playerController.GetComponent<Animator>().SetTrigger("WakeUp");
+            sleepImage.DOFade(0, 1);
+            sleepImage.enabled = false;
 
             foreach (Button bt in gameManager.gameButtons)
             {
@@ -87,7 +109,7 @@ public class TimeClock : MonoBehaviour
 
             foreach (Button bt in gameManager.objectButtons)
             {
-                bt.enabled = false;
+                bt.enabled = true;
             }
         }
 

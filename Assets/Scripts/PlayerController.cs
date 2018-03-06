@@ -27,6 +27,13 @@ public class PlayerController : MonoBehaviour
     private int happinessValue;
     private int hygieneValue;
 
+    // BISOGNI / VALORI NEL TEMPO
+
+    [BoxGroup("Bisogni, valore nel tempo")] public bool isNecessitiesActive = true;
+
+    [BoxGroup("Bisogni, valore nel tempo")] public int hungerForTime;
+    [BoxGroup("Bisogni, valore nel tempo")] public int happinessForTime;
+    [BoxGroup("Bisogni, valore nel tempo")] public int hygieneForTime;
 
     //private int pooValue;
 
@@ -35,6 +42,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+
         isActive = true;
 
         anim = GetComponent<Animator>();
@@ -65,10 +73,8 @@ public class PlayerController : MonoBehaviour
 
     public void updateStatus()
     {
-        // STATUS
 
-        // FAME
-
+        #region STATUS
         if (!PlayerPrefs.HasKey("hunger"))
         {
             hunger = 100;
@@ -133,14 +139,18 @@ public class PlayerController : MonoBehaviour
         {
             PlayerPrefs.SetString("then", getStringTime());
         }
+        #endregion
 
-        // STATISTICHE
+        #region STATISTICHE
 
         TimeSpan ts = getTimeSpan();
 
-        // Diminuisce la fame con il passare del tempo
-
-        hunger -= (int)(ts.TotalMinutes * 2);                                                             // Sottrae ogni ora
+        #region HUNGER
+        if(isNecessitiesActive == true)
+        {
+            hunger -= (int)(ts.TotalMinutes * hungerForTime);
+        }
+                                                                     // Sottrae ogni ora
         if (hunger >= 100)
         {
             hunger = 100;
@@ -150,11 +160,14 @@ public class PlayerController : MonoBehaviour
             hunger = 0;
             Debug.Log("fine partita");
         }
+        #endregion
 
-
-        // Diminuisce la felicità con il passare del tempo
-
-        happiness -= (int)(ts.TotalMinutes * 1);                                                             // Sottrae ogni ora
+        #region HAPPINESS
+        if(isNecessitiesActive == true)
+        {
+            happiness -= (int)(ts.TotalMinutes * happinessForTime);
+        }
+                                                            // Sottrae ogni ora
         if (happiness >= 100)
         {
             happiness = 100;
@@ -164,10 +177,14 @@ public class PlayerController : MonoBehaviour
             happiness = 0;
             Debug.Log("sei infelice");
         }
+        #endregion
 
-        // Diminuisce l'igiene con il passare del tempo
-
-        hygiene -= (int)(ts.TotalMinutes * 1);                                                             // Sottrae ogni ora
+        #region HYGIENE
+        if(isNecessitiesActive == true)
+        {
+            hygiene -= (int)(ts.TotalMinutes * hygieneForTime);
+        }
+                                                                     // Sottrae ogni ora
         if (hygiene >= 100)
         {
             hygiene = 100;
@@ -177,9 +194,9 @@ public class PlayerController : MonoBehaviour
             hygiene = 0;
             Debug.Log("stai puzzando");
         }
+        #endregion
 
-        // Diminuisce il tempo di apparizione della CACCA
-
+        #region POO
         poo -= (int)(ts.TotalSeconds * 1);                                                             // Sottrae ogni ora
         if (poo < 0)
         {
@@ -188,9 +205,9 @@ public class PlayerController : MonoBehaviour
             //pooButton.gameObject.SetActive(true);
             Debug.Log("C'è la cacca");
         }
+        #endregion
 
-        // LE TUE AZIONI DISPONIBILI
-
+        #region ACTIONS
         actionsCount += (int)(ts.TotalSeconds * 1);
         if (actionsCount >= 5)
         {
@@ -200,9 +217,11 @@ public class PlayerController : MonoBehaviour
         {
             actionsCount = 0;
         }
+        #endregion
 
-        // RITORNA OGNI 30 SECONDI IL TEMPO ATTUALE 
+        #endregion
 
+        #region SERVER TIME
         if (serverTime)
         {
             updateServer();
@@ -211,6 +230,7 @@ public class PlayerController : MonoBehaviour
         {
             InvokeRepeating("updateDevice", 0f, 30f);
         }
+        #endregion
 
     }
 
@@ -269,12 +289,6 @@ public class PlayerController : MonoBehaviour
         set { poo = value; }
     }
 
-    /*public int _clickCount
-    {
-        get { return clickCount; }
-        set { clickCount = value; }
-    }*/
-
     public int _actionsCount
     {
         get { return actionsCount; }
@@ -299,29 +313,27 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        // Animazione del numero
-
-        /*if (hunger < 100)
-        {
-            numbers[0].GetComponent<Animator>().SetTrigger("ScaleNumbers");
-            numbers[3].GetComponent<Animator>().SetTrigger("ScaleNumbers");
-        }*/
-
         SavePlayer();
     }
 
     // VALORI DEL CIBO
 
-    public void AppleValue()                                                                            // Valore della mela (CIBO)
+    public void HungerValue_0()                                                                            // Valore della mela (CIBO)
     {
         hungerValue = 5;
-        gameManager.hungerBar.transform.GetChild(3).transform.GetChild(0).GetComponent<Text>().text = "Mangia una mela";
+        gameManager.hungerBar.transform.GetChild(4).transform.GetChild(0).GetComponent<Text>().text = "Mangia una mela";
     }
 
-    public void CoffeeValue()                                                                           // Valore del caffè (CIBO)
+    public void HungerValue_1()                                                                           // Valore del caffè (CIBO)
     {
         hungerValue = 3;
-        gameManager.hungerBar.transform.GetChild(3).transform.GetChild(0).GetComponent<Text>().text = "Prendi un caffè";
+        gameManager.hungerBar.transform.GetChild(4).transform.GetChild(0).GetComponent<Text>().text = "Prendi un caffè";
+    }
+
+    public void HungerValue_2()                                                                           // Valore del caffè (CIBO)
+    {
+        hungerValue = 3;
+        gameManager.hungerBar.transform.GetChild(4).transform.GetChild(0).GetComponent<Text>().text = "Mangia qualcosa ";
     }
 
     // AGGIORNA FELICITA'
@@ -341,30 +353,30 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        /*if (happiness < 100)
-        {
-            numbers[2].GetComponent<Animator>().SetTrigger("ScaleNumbers");
-            numbers[3].GetComponent<Animator>().SetTrigger("ScaleNumbers");
-        }*/
-
         SavePlayer();
     }
 
     // VALORI DELLA FELICITA'
 
-    public void HappinessObj_0()
+    public void HappinessValue_0()
     {
         happinessValue = 5;
-        gameManager.happinessBar.transform.GetChild(3).transform.GetChild(0).GetComponent<Text>().text = "Balla";
+        gameManager.happinessBar.transform.GetChild(4).transform.GetChild(0).GetComponent<Text>().text = "Balla";
     }
 
-    public void HappinessObj_1()
+    public void HappinessValue_1()
     {
         happinessValue = 3;
-        gameManager.happinessBar.transform.GetChild(3).transform.GetChild(0).GetComponent<Text>().text = "Gioca";
+        gameManager.happinessBar.transform.GetChild(4).transform.GetChild(0).GetComponent<Text>().text = "Gioca";
     }
 
-    // AGGIORNA SALUTE (Hygiene)
+    public void HappinessValue_2()
+    {
+        happinessValue = 3;
+        gameManager.happinessBar.transform.GetChild(4).transform.GetChild(0).GetComponent<Text>().text = "Fai";
+    }
+
+    // AGGIORNA HYGIENE (Hygiene)
 
     public void UpdateHygiene()                                                                     
     {
@@ -382,13 +394,27 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        /*if (hygiene < 100)
-        {
-            numbers[2].GetComponent<Animator>().SetTrigger("ScaleNumbers");
-            numbers[3].GetComponent<Animator>().SetTrigger("ScaleNumbers");
-        }*/
-
         SavePlayer();
+    }
+
+    // VALORI DELL/IGIENE (Hygiene)
+
+    public void HygieneValue_0()
+    {
+        hygieneValue = 5;
+        gameManager.hygieneBar.transform.GetChild(4).transform.GetChild(0).GetComponent<Text>().text = "Lavati con la spugna";
+    }
+
+    public void HygieneValue_1()
+    {
+        hygieneValue = 3;
+        gameManager.hygieneBar.transform.GetChild(4).transform.GetChild(0).GetComponent<Text>().text = "Lavati con la pompa dell'acqua";
+    }
+
+    public void HygieneValue_2()
+    {
+        hygieneValue = 3;
+        gameManager.hygieneBar.transform.GetChild(4).transform.GetChild(0).GetComponent<Text>().text = "Lavati con il sapone";
     }
 
     // AGGIORNA CACCA (POO)
@@ -401,20 +427,6 @@ public class PlayerController : MonoBehaviour
         hygiene += 10;                                                                              // Aumenta l'igiene
 
         SavePlayer();                                                                               // SALVA IL GIOCATORE
-    }
-
-    // VALORI DELL/IGIENE (Hygiene)
-
-    public void HygieneValue_0()                                                                     
-    {
-        hygieneValue = 5;
-        gameManager.hygieneBar.transform.GetChild(3).transform.GetChild(0).GetComponent<Text>().text = "Lavati con la spugna";
-    }
-
-    public void HygieneValue_1()
-    {
-        hygieneValue = 3;
-        gameManager.hygieneBar.transform.GetChild(3).transform.GetChild(0).GetComponent<Text>().text = "Lavati con la pompa dell'acqua";
     }
 
     // SALVA IL GIOCATORE
