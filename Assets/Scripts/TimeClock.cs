@@ -11,11 +11,15 @@ public class TimeClock : MonoBehaviour
     private GameManager gameManager;                                                    // GAMEMANAGER
 
     public Image sleepImage;
+    public Image fadeImage;
 
     private bool isActive = true;                                                       // E' Attivo
 
     void Start()
     {
+        fadeImage.enabled = true;
+        StartCoroutine(StartFade());
+
         //sleepImage.enabled = true;
         sleepImage.DOFade(0, 0);
         playerController = FindObjectOfType<PlayerController>();
@@ -30,12 +34,24 @@ public class TimeClock : MonoBehaviour
 
         #region EVENTI AD ORARI PRESTABILITI (UTILIZZA LA TEXTBOX)
 
-        if (currentTime.Hours == 20 && currentTime.Minutes <= 40 && isActive == true)
+        if (currentTime.Hours == 20 && currentTime.Minutes <= 40 && isActive == true && fadeImage.enabled == false)
         {
             textBox.ShowBar("E' quasi ora di cena :)");
             isActive = false;
         }
         else if(currentTime.Hours == 20 && currentTime.Minutes > 40)
+        {
+            isActive = true;
+        }
+
+        // PROVA 
+
+        if (currentTime.Hours == 17 && currentTime.Minutes <= 40 && isActive == true && fadeImage.enabled == false)
+        {
+            textBox.ShowBar("Testo di prova");
+            isActive = false;
+        }
+        else if (currentTime.Hours == 20 && currentTime.Minutes > 40)
         {
             isActive = true;
         }
@@ -115,5 +131,15 @@ public class TimeClock : MonoBehaviour
 
         #endregion
 
+    }
+
+    public IEnumerator StartFade()
+    {
+        yield return new WaitForSeconds(2);
+
+        fadeImage.DOFade(0, 1);
+        yield return new WaitForSeconds(0.8f);
+        fadeImage.enabled = false;
+        // disattiva immagine fade
     }
 }

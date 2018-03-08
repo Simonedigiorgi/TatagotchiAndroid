@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine.UI;
 
@@ -27,7 +28,7 @@ public class GameManager : MonoBehaviour
     [BoxGroup("Pannelli")] public GameObject hygieneBar;                                    // Pannello dell'igiene
     [BoxGroup("Pannelli")] public GameObject statsBar;                                      // Pannello delle statistiche
 
-    //[BoxGroup("Audio")] public AudioClip openPanel;                                         // Audio apertura Panello
+    [BoxGroup("Audio")] public AudioClip openPanel;                                         // Audio apertura Panello
 
     private bool isActive = true;                                                           // E' Attivo?
 
@@ -189,28 +190,28 @@ public class GameManager : MonoBehaviour
                 happinessBar.SetActive(false);                                                          // Chiudi il pannello Happiness
                 hygieneBar.SetActive(false);                                                            // Chiudi il pannello Hygiene
                 statsBar.SetActive(false);                                                              // Chiudi il pannello Stats    
-                //source.PlayOneShot(openPanel);
+                source.PlayOneShot(openPanel, 0.3f);
                 break;
             case (1):
                 happinessBar.SetActive(!happinessBar.activeInHierarchy);                                // Toggle HappinessBar
                 hungerBar.SetActive(false);                                                             // Chiudi il pannello Hunger
                 hygieneBar.SetActive(false);                                                            // Chiudi il pannello Hygiene
                 statsBar.SetActive(false);                                                              // Chiudi il pannello Stats   
-                //source.PlayOneShot(openPanel);
+                source.PlayOneShot(openPanel, 0.3f);
                 break;
             case (2):
                 hygieneBar.SetActive(!hygieneBar.activeInHierarchy);                                    // Toggle HygieneBar                                      
                 hungerBar.SetActive(false);                                                             // Chiudi il pannello Hunger
                 happinessBar.SetActive(false);                                                          // Chiudi il pannello Happiness
                 statsBar.SetActive(false);                                                              // Chiudi il pannello Stats   
-                //source.PlayOneShot(openPanel);
+                source.PlayOneShot(openPanel, 0.3f);
                 break;
             case (3):
                 statsBar.SetActive(!statsBar.activeInHierarchy);                                        // Toggle StatsBar                                                                                            
                 hungerBar.SetActive(false);                                                             // Chiudi il pannello Hunger
                 happinessBar.SetActive(false);                                                          // Chiudi il pannello Happiness
                 hygieneBar.SetActive(false);                                                            // Chiudi il pannello Hygiene
-                //source.PlayOneShot(openPanel);
+                source.PlayOneShot(openPanel, 0.3f);
                 break;
             case (4):
                                                            
@@ -228,4 +229,6 @@ public class GameManager : MonoBehaviour
             g.SetActive(false);
         }
     }
+
+
 }

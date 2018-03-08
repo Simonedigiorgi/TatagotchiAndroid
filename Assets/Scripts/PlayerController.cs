@@ -202,8 +202,6 @@ public class PlayerController : MonoBehaviour
         {
             poo = 0;
             gameManager.objectButtons[0].gameObject.SetActive(true);
-            //pooButton.gameObject.SetActive(true);
-            Debug.Log("C'è la cacca");
         }
         #endregion
 
